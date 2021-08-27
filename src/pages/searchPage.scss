@@ -1,0 +1,20 @@
+.search_page {
+    background: #f8f8e5;
+
+    .search_content {
+        padding: 30px;
+
+        .goods_title {
+            margin: 42px 0 16px 0;
+
+            &:nth-of-type(1) {
+                margin-top: 0;
+            }
+        }
+
+        .MuiTypography-root {
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+    }
+}

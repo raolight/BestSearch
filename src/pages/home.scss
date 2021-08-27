@@ -1,0 +1,24 @@
+.home_page {
+    width: 100%;
+    background: #f8f8e5;
+    display: flex;
+    flex-direction: column;
+
+    .home_content {
+        padding: 10%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .home_title {
+            margin-bottom: 30px;
+            font-size: 60px;
+        }
+
+        .search_box {
+            width: 100%;
+            display: flex;
+        }
+    }
+}
