@@ -20,6 +20,10 @@ const Home = () => {
     // 按回车搜索
     const onPressSearch = (e) => {
         if (e.key === 'Enter') {
+            if (searchKey === '' || searchKey.trim().length === 0) {
+                alert('请输入搜索关键词')
+                return
+            }
             history.push({ pathname: '/search/' + replaceSpace(searchKey) })
         }
     }

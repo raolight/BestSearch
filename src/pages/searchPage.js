@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import * as api from '@/utils/api'
 import moment from 'moment'
 import { Column, Area } from '@ant-design/charts'
+import { searchDataAction } from '@/redux/action'
+import { connect } from 'react-redux'
 
 import Header from '@/components/header'
 
@@ -16,6 +19,7 @@ import Typography from '@material-ui/core/Typography'
 import './searchPage.scss'
 
 const SearchPage = (props) => {
+    const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [searchData, setSearchData] = useState(null)
 
@@ -131,9 +135,16 @@ const SearchPage = (props) => {
     })
 
     useEffect(() => {
+        if (!props?.match?.params?.keyword) return
+
         getSearchData(props?.match?.params?.keyword)
         // eslint-disable-next-line
     }, [props?.match?.params?.keyword])
+
+    useEffect(() => {
+        props.sendSearchData(searchData) // 存储搜索数据到store
+        // eslint-disable-next-line
+    }, [searchData])
 
     const getSearchData = (searchKey) => {
         setLoading(true)
@@ -152,6 +163,12 @@ const SearchPage = (props) => {
                 console.log(error)
                 setLoading(false)
             })
+    }
+
+    // 跳转产品详情页
+    const goProductDetail = (item) => {
+        console.log('item', item)
+        history.push({ pathname: '/product/' + item.id })
     }
 
     return (
@@ -215,7 +232,7 @@ const SearchPage = (props) => {
                                     {searchData.product_trends.map((item, index) => (
                                         <Grid item key={index}>
                                             <Card style={{ width: 200 }}>
-                                                <Area {...areaChartConfig} style={{ height: 200 }} />
+                                                <Area {...areaChartConfig} style={{ height: 200 }} onClick={() => goProductDetail(item)} />
                                             </Card>
                                         </Grid>
                                     ))}
@@ -233,7 +250,7 @@ const SearchPage = (props) => {
                                 <>
                                     {searchData.products.map((item, index) => (
                                         <Grid item key={index}>
-                                            <Card style={{ width: 200, height: 300 }}>
+                                            <Card style={{ width: 200, height: 300 }} onClick={() => goProductDetail(item)}>
                                                 <CardActionArea>
                                                     <CardMedia image={item.image} title={item.title} style={{ height: 140 }} />
                                                     <CardContent>
@@ -266,4 +283,20 @@ const SearchPage = (props) => {
     )
 }
 
-export default SearchPage
+// 往props上挂载store.state
+const mapStateToProps = (state) => {
+    return {
+        store: state,
+    }
+}
+
+// 往props上挂在dispatch
+const mapDispatchToProps = (dispatch) => {
+    return {
+        sendSearchData: (searchData) => {
+            dispatch(searchDataAction(searchData))
+        },
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchPage)

@@ -12,3 +12,10 @@ export const logoutAction = (params) => {
         params,
     }
 }
+
+export const searchDataAction = (searchData) => {
+    return {
+        type: 'SET_SEARCH_DATA',
+        searchData,
+    }
+}

@@ -5,6 +5,7 @@
 // 全局初始状态
 const initialState = {
     isLogin: false,
+    searchData: null,
 }
 
 export const reducer = (state = initialState, action) => {
@@ -17,6 +18,11 @@ export const reducer = (state = initialState, action) => {
         case 'LOG_OUT':
             return {
                 ...initialState,
+            }
+        case 'SET_SEARCH_DATA':
+            return {
+                ...state,
+                searchData: action.searchData,
             }
         default:
             return state

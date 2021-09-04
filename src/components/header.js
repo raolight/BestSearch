@@ -15,7 +15,8 @@ const Header = (props) => {
     const history = useHistory()
 
     useEffect(() => {
-        setSearchKey(props?.match?.params?.keyword)
+        if (!props?.match?.params?.keyword) return
+        setSearchKey(props.match.params.keyword)
         // eslint-disable-next-line
     }, [props?.match?.params?.keyword])
 
@@ -28,6 +29,10 @@ const Header = (props) => {
     const onPressSearch = (e) => {
         if (e.key === 'Enter') {
             console.log('回车搜索')
+            if (searchKey === '' || searchKey.trim().length === 0) {
+                alert('请输入搜索关键词')
+                return
+            }
             history.push({ pathname: '/search/' + replaceSpace(searchKey) })
         }
     }
@@ -35,6 +40,10 @@ const Header = (props) => {
     // 点击搜索图标
     const onPressSearchIcon = (e) => {
         console.log('searchKey', searchKey)
+        if (searchKey === '' || searchKey.trim().length === 0) {
+            alert('请输入搜索关键词')
+            return
+        }
         history.push({ pathname: '/search/' + replaceSpace(searchKey) })
     }
 
